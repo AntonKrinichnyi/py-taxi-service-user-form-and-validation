@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ValidationError
 from taxi.models import Car, Driver
-from django.contrib.auth import get_user_model
 
 
 class DriverCreationForm(UserCreationForm):
@@ -16,7 +15,9 @@ class DriverCreationForm(UserCreationForm):
                 not license_number[:3].isalpha() or\
                 not license_number[:3].isupper() or\
                 not license_number[3:].isdigit():
-            raise ValidationError("Driver license is none validate")
+            raise ValidationError("Driver license must be 8 characters long,\
+                                   with the first 3 characters as uppercase\
+                                   letters and the last 5 as digits")
         return license_number
 
 
@@ -31,13 +32,15 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 not license_number[:3].isalpha() or\
                 not license_number[:3].isupper() or\
                 not license_number[3:].isdigit():
-            raise ValidationError("Driver license is none validate")
+            raise ValidationError("Driver license must be 8 characters long,\
+                                   with the first 3 characters as uppercase letters\
+                                   and the last 5 as digits")
         return license_number
 
 
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
-        queryset=get_user_model().objects.all(),
+        queryset=Driver.objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=False
     )
