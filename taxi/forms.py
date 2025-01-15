@@ -33,8 +33,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 not license_number[:3].isupper() or\
                 not license_number[3:].isdigit():
             raise ValidationError("Driver license must be 8 characters long,\
-                                   with the first 3 characters as uppercase letters\
-                                   and the last 5 as digits")
+                                   with the first 3 characters as uppercase\
+                                   letters and the last 5 as digits")
         return license_number
 
 
